@@ -1,18 +1,1 @@
-﻿  Moc'ing RenderingPipeline.h...
-  Rcc'ing RenderingPipeline.qrc...
-  Uic'ing RenderingPipeline.ui...
-  RCC: Warning: No resources in 'C:\Users\Administrator\Desktop\Final\RenderingPipeline\RenderingPipeline\RenderingPipeline.qrc'.
-  Camera.cpp
-  DrawPolygon.cpp
-  Light.cpp
-  main.cpp
-  Matrix4x4.cpp
-  PerspectiveProjector.cpp
-  PolygonCliper.cpp
-  Projector.cpp
-  RenderingPipeline.cpp
-  Transformer.cpp
-  Vector4.cpp
-  moc_RenderingPipeline.cpp
-  qrc_RenderingPipeline.cpp
-  RenderingPipeline.vcxproj -> C:\Users\Administrator\Desktop\Final\RenderingPipeline\x64\Debug\RenderingPipeline.exe
+﻿
