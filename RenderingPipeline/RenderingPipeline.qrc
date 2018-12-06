@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="RenderingPipeline">
+    <qresource prefix="/RenderingPipeline">
+        <file>Resources/pic.jpg</file>
     </qresource>
 </RCC>

@@ -15,10 +15,13 @@
 #include "../RenderingPipeline/PerspectiveProjector.cpp"
 #include "../RenderingPipeline/PolygonCliper.h"
 #include "../RenderingPipeline/PolygonCliper.cpp"
-//#include "../RenderingPipeline/DrawPolygon.h"
-//#include "../RenderingPipeline/DrawPolygon.cpp"
+#include "../RenderingPipeline/Light.h"
+#include "../RenderingPipeline/Light.cpp"
+#include "../RenderingPipeline/PolygonCliper.h"
+//#include "../RenderingPipeline/PolygonCliper.cpp"
 
 #include <cmath>
+#include <memory>
 using std::fabs;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -360,7 +363,7 @@ namespace ProjectTest
 			perspective.setProjectMat();
 			Object obj;
 			Plane plane;
-			plane.emplace_back(Point(20, 20, -600));
+			plane.emplace_back(Point(20, 20, -50));
 			obj.planes.push_back(plane);
 			perspective.project(obj);
 			auto& pl = obj.planes[0];
@@ -371,12 +374,95 @@ namespace ProjectTest
 	};
 }
 
-// 测试屏幕显示输出过程
+ // 测试屏幕显示输出过程
 namespace ShowOnScreen
 {
 	TEST_CLASS(PolygonCliper_TEST)
 	{
+		TEST_METHOD(Clip_Test)
+		{
+			std::shared_ptr<PolygonCliper>plc=std::make_shared<PolygonCliper>();
+			plc->setBoundary(100, -100, -100, 100);
+			Object obj;
+			Plane plane;
 
+			// 被包含在边界内部
+			plane.emplace_back(Point(-50, 50));
+			plane.emplace_back(Point(-50, -50));
+			plane.emplace_back(Point(50, -50));
+			plane.emplace_back(Point(50, 50));
+			plane.emplace_back(Point(-50, 50));
+
+			obj.planes.push_back(plane);
+			plc->clip(obj);
+			plane.clear();
+			plane = obj.planes[0];
+
+			Assert::AreEqual<int>(plane.size(), 5);
+			Assert::IsTrue(fabs(plane[0].x + 50) < 0.001&&fabs(plane[0].y - 50) < 0.001);
+			Assert::IsTrue(fabs(plane[1].x + 50) < 0.001&&fabs(plane[1].y + 50) < 0.001);
+			Assert::IsTrue(fabs(plane[2].x - 50) < 0.001&&fabs(plane[2].y + 50) < 0.001);
+			Assert::IsTrue(fabs(plane[3].x - 50) < 0.001&&fabs(plane[3].y - 50) < 0.001);
+			Assert::IsTrue(plane[0].x == plane[4].x&&plane[0].y == plane[4].y);
+
+			// 边界被图形包含
+			obj.planes.clear();
+			plane.clear();
+			plane.emplace_back(Point(-150, 150));
+			plane.emplace_back(Point(-150, -150));
+			plane.emplace_back(Point(150, -150));
+			plane.emplace_back(Point(150, 150));
+			plane.emplace_back(Point(-150, 150));
+			obj.planes.push_back(plane);
+			plc->clip(obj);
+			plane.clear();
+			plane = obj.planes[0];
+
+			Assert::IsTrue(plane.size()==5);
+
+			// 边界和图形有部分交点
+			obj.planes.clear();
+			plane.clear();
+			plane.emplace_back(Point(-150, 150));
+			plane.emplace_back(Point(0, 150));
+			plane.emplace_back(Point(0, 0));
+			plane.emplace_back(Point(-150, 0));
+			plane.emplace_back(Point(-150, 150));
+			obj.planes.push_back(plane);
+			plc->clip(obj);
+			plane.clear();
+			plane = obj.planes[0];
+			Assert::IsTrue(plane.size() == 5);
+
+			// 部分交点有漏洞的测试
+			obj.planes.clear();
+			plane.clear();
+			plane.emplace_back(Point(-451, -421));
+			plane.emplace_back(Point(-359, -513));
+			plane.emplace_back(Point(-303, -542));
+			plane.emplace_back(Point(-386, -461));
+			plane.emplace_back(Point(-451, -421));
+			obj.planes.push_back(plane);
+			plc->setBoundary(500, -500, -500, 500);
+			plc->clip(obj);
+			plane.clear();
+			plane = obj.planes[0];
+
+			// 图形完全在边界外
+			obj.planes.clear();
+			plane.clear();
+			plane.emplace_back(Point(150, 150));
+			plane.emplace_back(Point(250, 150));
+			plane.emplace_back(Point(250, 250));
+			plane.emplace_back(Point(150, 250));
+			plane.emplace_back(Point(150, 150));
+			obj.planes.push_back(plane);
+			plc->clip(obj);
+			plane.clear();
+			plane = obj.planes[0];
+
+			Assert::IsTrue(plane.empty());
+		}
 	};
 
 	TEST_CLASS(DrawPolygon_TEST)

@@ -1,1 +1,38 @@
-﻿
+﻿  unittest1.cpp
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(55): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(56): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(57): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(71): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(72): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(73): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(83): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(112): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(113): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(114): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(126): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(127): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(128): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(137): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(166): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(167): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(168): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(180): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(181): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(182): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(191): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(220): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(221): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(222): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(234): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(235): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\polygoncliper.cpp(236): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\light.cpp(51): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\light.cpp(52): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\renderingpipeline\light.cpp(53): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+c:\users\erick\documents\my task\pipeline\unittest\unittest1.cpp(401): warning C4267: 'argument': conversion from 'size_t' to 'const T', possible loss of data
+          with
+          [
+              T=int
+          ]
+  UnitTest.vcxproj -> C:\Users\Erick\Documents\My Task\PipeLine\x64\Debug\UnitTest.dll

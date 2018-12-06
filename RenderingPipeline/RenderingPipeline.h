@@ -64,8 +64,8 @@ protected:
 	Vector4 m_lightDir;
 
 	// œ‘ æ±Íº«
-	bool m_showFrame{ true };
-	bool m_showFill{ false };
+	bool m_showFrame{ false };
+	bool m_showFill{ true };
 	bool m_showTexture{ false };
 
 private:

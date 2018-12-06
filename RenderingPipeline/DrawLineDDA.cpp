@@ -75,13 +75,15 @@ void DrawLineDDA::drawLine(const Point & start,
 
 	// 在计算的同时进行插值处理
 	for (int i = 0; i < steps; ++i) {
-
-		// 深度缓冲，只有当前的位置靠前才能进行绘制，注意标准
-		if (Z < m_buffer[(int)X + WINDOW_HEIGHT / 2][(int)(Y) + WINDOW_HEIGHT / 2]) {
+		// 深度缓冲，只有当前的位置靠前才能进行绘制，注意标准，注意可能的浮点数误差
+		int x = std::max(0, std::min((int)X + WINDOW_HEIGHT / 2, WINDOW_HEIGHT - 1));
+		int y = std::max(std::min((int)Y + WINDOW_HEIGHT / 2, WINDOW_WIDTH - 1), 0);
+		if (Z < m_buffer[x][y]) {
 			pointsOut.emplace_back(Point(X, Y, Z,
 				(int)R, (int)G, (int)B,
 				(int)U, (int)V));
-			m_buffer[(int)X + WINDOW_HEIGHT / 2][(int)Y + WINDOW_HEIGHT / 2] = Z;   // 更新缓冲值
+			//m_buffer[(int)X + WINDOW_HEIGHT / 2][(int)Y + WINDOW_HEIGHT / 2] = Z;   // 更新缓冲值
+			m_buffer[x][y] = Z;   // 更新缓冲值
 		}
 
 		// 坐标和颜色的插值

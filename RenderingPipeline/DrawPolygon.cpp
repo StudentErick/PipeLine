@@ -5,6 +5,9 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <QImage>
+#include <QPixmap>
+#include <QString>
 
 DrawPolygon::DrawPolygon()
 {
@@ -17,6 +20,9 @@ DrawPolygon::~DrawPolygon()
 	if (m_PolygonCliper != nullptr) {
 		delete m_PolygonCliper;
 	}
+	if (m_drawLine != nullptr) {
+		delete m_drawLine;
+	}
 }
 
 void DrawPolygon::setTexture(int** red, int** green, int** blue)
@@ -24,6 +30,19 @@ void DrawPolygon::setTexture(int** red, int** green, int** blue)
 	m_textureRed = red;
 	m_textureGreen = green;
 	m_textureBlue = blue;
+	//QPixmap texturePic;
+	//texturePic.load(QString(":/Resources/pic.jpg"));
+	//QImage image = texturePic.toImage();
+	//int x = image.width();
+	//int y = image.height();
+	//for (int i = 0; i < PIC_HEIGHT; ++i) {
+	//	for (int j = 0; j < PIC_WIDTH; ++j) {
+	//		QColor color = image.pixel(i, j);
+	//		m_textureRed[i][j] = color.red();
+	//		m_textureGreen[i][j] = color.green();
+	//		m_textureBlue[i][j] = color.blue();
+	//	}
+	//}
 }
 
 void DrawPolygon::setDepth(double ** depth)
@@ -41,7 +60,15 @@ void DrawPolygon::drawFrame(QWidget * widget, QPainter * painter, Object & objec
 	m_painter = painter;
 	m_widget = widget;
 	m_painter->begin(m_widget);
+	int L = -widget->width() / 2;
+	int R = -L;
+	int T = widget->height();
+	int B = -T;
+	m_PolygonCliper->setBoundary(T, B, L, R);
+	m_PolygonCliper->clip(object);
 	for (auto& plane : object.planes) {
+		if (plane.empty())
+			continue;
 		for (int i = 0; i < plane.size() - 1; ++i) {
 			std::vector<Point>points;
 			m_drawLine->drawLine(plane[i], plane[i + 1], points);
@@ -178,7 +205,9 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 					}
 					QPen pen(color);
 					m_painter->setPen(pen);
-					m_painter->drawPoint(QPoint(p.x + WINDOW_HEIGHT / 2, WINDOW_HEIGHT / 2 - p.y));  //    注意绘制的标准化
+					int x = static_cast<int>(p.x + WINDOW_HEIGHT / 2 + 0.5);
+					int y = static_cast<int>(WINDOW_HEIGHT / 2 - p.y + 0.5);
+					m_painter->drawPoint(QPoint(x, y));  //    注意绘制的标准化
 				}
 				pvec.clear();
 				m += 2;// 注意+2

@@ -1,6 +1,5 @@
 #include "Light.h"
-#include <cassert>
-#include <QDebug>
+#include <algorithm>
 
 
 Light::Light()
