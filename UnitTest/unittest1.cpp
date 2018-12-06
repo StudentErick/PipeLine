@@ -5,12 +5,26 @@
 #include "../RenderingPipeline/Vector4.cpp"
 #include "../RenderingPipeline/Matrix4x4.h"
 #include "../RenderingPipeline/Matrix4x4.cpp"
+#include "../RenderingPipeline/Transformer.h"
+#include "../RenderingPipeline/Transformer.cpp"
+#include "../RenderingPipeline/Camera.h"
+#include "../RenderingPipeline/Camera.cpp"
+#include "../RenderingPipeline/Projector.h"
+#include "../RenderingPipeline/Projector.cpp"
+#include "../RenderingPipeline/PerspectiveProjector.h"
+#include "../RenderingPipeline/PerspectiveProjector.cpp"
+#include "../RenderingPipeline/PolygonCliper.h"
+#include "../RenderingPipeline/PolygonCliper.cpp"
+//#include "../RenderingPipeline/DrawPolygon.h"
+//#include "../RenderingPipeline/DrawPolygon.cpp"
 
 #include <cmath>
 using std::fabs;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-const double eps = 0.1;  // 浮点数的比较，使用减法误差方式
+const double eps = 0.01;  // 浮点数的比较，使用减法误差方式
+
+// 测试数学库
 namespace MathTest
 {
 	TEST_CLASS(Vector4_TEST)
@@ -125,7 +139,7 @@ namespace MathTest
 			Matrix4x4 mat1(m1);
 			Matrix4x4 mat2(m2);
 			Matrix4x4 mat3 = mat1 * mat2;
-			double m3[4][4] ={ 
+			double m3[4][4] = {
 				{-230, -290, -350, -410},
 				{138,  174  ,210  ,246 },
 				{506,  638,  770,  902},
@@ -160,5 +174,213 @@ namespace MathTest
 		{
 
 		}
+	};
+}
+
+// 测试三维转换
+namespace ThreeDTest
+{
+	TEST_CLASS(Transformer_TEST)
+	{
+	public:
+		TEST_METHOD(Transformer_transformRotationX)  // 绕x轴旋转
+		{
+			Object cube;
+			cube.centerPos = Vector4(0, 0, 0);
+
+			Transformer transformer;
+			Point p0(-10, 0, 0);
+			Point p1(0, 10, 0);
+			Point p2(10, 0, 0);
+			Plane plane;
+
+			plane.push_back(p0);
+			plane.push_back(p1);
+			plane.push_back(p2);
+			cube.planes.push_back(plane);
+
+			double angle = PI * 90 / 180;
+
+			// 绕X轴顺时针90
+			transformer.transformRotationX(cube, angle);
+
+			auto& plane0 = cube.planes[0];
+			p0 = plane0[0];
+			p1 = plane0[1];
+			p2 = plane0[2];
+
+			Assert::IsTrue(fabs(p0.x + 10) <= 0.001);
+			Assert::IsTrue(fabs(p0.y) <= 0.001);
+			Assert::IsTrue(fabs(p0.z) <= 0.001);
+
+			Assert::IsTrue(fabs(p1.x) <= 0.001);
+			Assert::IsTrue(fabs(p1.y) <= 0.001);
+			Assert::IsTrue(fabs(p1.z - 10) <= 0.001);
+
+			Assert::IsTrue(fabs(p2.x - 10) <= 0.001);
+			Assert::IsTrue(fabs(p2.y) <= 0.001);
+			Assert::IsTrue(fabs(p2.z) <= 0.001);
+		}
+
+		TEST_METHOD(Transformer_transformRotationY)  // 绕Y轴旋转
+		{
+			Object cube;
+			cube.centerPos = Vector4(0, 0, 0);
+
+			Transformer transformer;
+			Point p0(-10, 0, 0);
+			Point p1(0, 10, 0);
+			Point p2(10, 0, 0);
+			Plane plane;
+
+			plane.push_back(p0);
+			plane.push_back(p1);
+			plane.push_back(p2);
+			cube.planes.push_back(plane);
+
+			double angle = PI * 90 / 180;
+
+			transformer.transformRotationY(cube, angle);
+
+			auto& plane0 = cube.planes[0];
+			p0 = plane0[0];
+			p1 = plane0[1];
+			p2 = plane0[2];
+
+			Assert::IsTrue(fabs(p0.x) <= 0.001);
+			Assert::IsTrue(fabs(p0.y) <= 0.001);
+			Assert::IsTrue(fabs(p0.z - 10) <= 0.001);
+
+			Assert::IsTrue(fabs(p1.x) <= 0.001);
+			Assert::IsTrue(fabs(p1.y - 10) <= 0.001);
+			Assert::IsTrue(fabs(p1.z) <= 0.001);
+
+			Assert::IsTrue(fabs(p2.x) <= 0.001);
+			Assert::IsTrue(fabs(p2.y) <= 0.001);
+			Assert::IsTrue(fabs(p2.z + 10) <= 0.001);
+		}
+
+		TEST_METHOD(Transformer_transformRotationZ)  // 绕Z轴旋转
+		{
+			Object cube;
+			cube.centerPos = Vector4(0, 0, 0);
+
+			Transformer transformer;
+			Point p0(-10, 0, 0);
+			Point p1(0, 10, 0);
+			Point p2(10, 0, 0);
+			Plane plane;
+
+			plane.push_back(p0);
+			plane.push_back(p1);
+			plane.push_back(p2);
+			cube.planes.push_back(plane);
+
+			double angle = PI * 90 / 180;
+
+			transformer.transformRotationZ(cube, angle);
+
+			auto& plane0 = cube.planes[0];
+			p0 = plane0[0];
+			p1 = plane0[1];
+			p2 = plane0[2];
+
+			Assert::IsTrue(fabs(p0.x) <= 0.001);
+			Assert::IsTrue(fabs(p0.y + 10) <= 0.001);
+			Assert::IsTrue(fabs(p0.z) <= 0.001);
+
+			Assert::IsTrue(fabs(p1.x + 10) <= 0.001);
+			Assert::IsTrue(fabs(p1.y) <= 0.001);
+			Assert::IsTrue(fabs(p1.z) <= 0.001);
+
+			Assert::IsTrue(fabs(p2.x) <= 0.001);
+			Assert::IsTrue(fabs(p2.y - 10) <= 0.001);
+			Assert::IsTrue(fabs(p2.z) <= 0.001);
+
+			// 单独测试点，
+			Plane plane1;
+			plane1.emplace_back(Point(1, 1, -1));
+			cube.planes.clear();
+			cube.planes.push_back(plane1);
+			transformer.transformRotationZ(cube, angle);
+			auto& plane11 = cube.planes[0];
+			p0 = plane11[0];
+			Assert::IsTrue(fabs(p0.x + 1) <= 0.001);
+			Assert::IsTrue(fabs(p0.y - 1) <= 0.001);
+			Assert::IsTrue(fabs(p0.z + 1) <= 0.001);
+		}
+
+		TEST_METHOD(Transformer_transformOffset)  // 位移测试
+		{
+			Object cube;
+			cube.centerPos = Vector4(0, 0, 0);
+			Transformer transformer;
+
+			Vector4 offset(1, 1, 1, 1);
+			transformer.transformOffset(cube, offset);
+
+			Assert::IsTrue(fabs(cube.centerPos.X() - 1) <= 0.01);
+			Assert::IsTrue(fabs(cube.centerPos.Y() - 1) <= 0.01);
+			Assert::IsTrue(fabs(cube.centerPos.Z() - 1) <= 0.01);
+		}
+	};
+
+	TEST_CLASS(Camera_TEST)
+	{
+		TEST_METHOD(Camera_Transform)
+		{
+			Camera camera;
+			Vector4 pos(1, 0, 1);
+			Vector4 target(0, 0, 0);
+			Vector4 up(0, 1, 0);
+			camera.setCamera(pos, target, up);
+
+			Object cube, cubeRes;
+			cube.centerPos = Vector4(0, 0, 0);
+			Plane plane;
+			plane.emplace_back(Point(0, 0, 0));
+			cube.planes.push_back(plane);
+			camera.transform(cube, cubeRes);
+			auto& res = cubeRes.planes[0];
+			Assert::IsTrue(fabs(res[0].x) <= 0.01);
+			Assert::IsTrue(fabs(res[0].y) <= 0.01);
+			Assert::IsTrue(fabs(res[0].z + std::sqrt(2)) <= 0.01);
+		}
+	};
+}
+
+// 测试投影矩阵
+namespace ProjectTest
+{
+	TEST_CLASS(Perspective_TEST)
+	{
+		TEST_METHOD(PerspectiveProject_TEST) 
+		{
+			PerspectiveProjector perspective;
+			perspective.setProjectMat();
+			Object obj;
+			Plane plane;
+			plane.emplace_back(Point(20, 20, -600));
+			obj.planes.push_back(plane);
+			perspective.project(obj);
+			auto& pl = obj.planes[0];
+			auto& p = pl[0];
+			Assert::IsTrue(fabs(p.x - 200) <= eps);
+			Assert::IsTrue(fabs(p.y - 200) <= eps);
+		}
+	};
+}
+
+// 测试屏幕显示输出过程
+namespace ShowOnScreen
+{
+	TEST_CLASS(PolygonCliper_TEST)
+	{
+
+	};
+
+	TEST_CLASS(DrawPolygon_TEST)
+	{
+
 	};
 }

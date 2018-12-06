@@ -2,6 +2,7 @@
 
 #include "user_data.h"
 #include "Vector4.h"
+#include "user_data.h"
 #include <vector>
 
 /*
@@ -16,10 +17,10 @@ public:
 	void setCameraDir(const Vector4& cameraDir);
 	// 设置光线方向
 	void setLightDir(const Vector4& lightDir);
-	// 设置光线
-	void setPolygonLight(std::vector<Point>& polygon);
+	// 新版的设置光线的函数，设置图形每个面的光线
+	void setPolygonLight(Plane& plane);
 protected:
-	// 相机方向
+	// 相机方向，这里的相机方向是 camTarget-camPos
 	Vector4 m_cameraDir;
 	// 光线方向
 	Vector4 m_lightDir;

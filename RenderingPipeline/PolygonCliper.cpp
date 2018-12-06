@@ -15,6 +15,10 @@ void PolygonCliper::clip(std::vector<Point>& pointsIn, std::vector<Point>& point
 {
 }
 
+void PolygonCliper::clip(Object & object)
+{
+}
+
 
 void PolygonCliper::setBoundary(double t, double d, double l, double r)
 {

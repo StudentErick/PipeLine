@@ -91,6 +91,10 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,6 +120,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DrawLineAlgorithm.cpp" />
+    <ClCompile Include="DrawLineDDA.cpp" />
     <ClCompile Include="DrawPolygon.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -138,15 +144,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DrawLineAlgorithm.h" />
+    <ClInclude Include="DrawLineDDA.h" />
     <ClInclude Include="DrawPolygon.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="PerspectiveProjector.h" />
     <ClInclude Include="PolygonCliper.h" />
     <ClInclude Include="Projector.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Transformer.h" />
     <ClInclude Include="user_data.h" />
     <ClInclude Include="Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RenderingPipeline.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

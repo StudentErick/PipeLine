@@ -23,6 +23,7 @@ public:
 	double dot(const Vector4& vec);
 	double length();
 	void normalize();
+	void reverse();
 
 	inline void X(double _x) { v[0] = _x; }
 	inline double X() { return v[0]; }
@@ -37,3 +38,11 @@ protected:
 	double v[4];
 };
 
+// 一个平面由它的顶点组成
+using Plane = std::vector<Point>;
+
+// 空间物体的对象
+struct Object {
+	Vector4 centerPos;            // 物体局部坐标中心在世界中的位置
+	std::vector<Plane> planes;    // 物体的各个平面
+};

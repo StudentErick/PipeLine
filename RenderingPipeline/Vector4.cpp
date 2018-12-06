@@ -95,3 +95,10 @@ void Vector4::normalize()
 	v[1] /= len;
 	v[2] /= len;
 }
+
+void Vector4::reverse()
+{
+	v[0] = -v[0];
+	v[1] = -v[1];
+	v[2] = -v[2];
+}

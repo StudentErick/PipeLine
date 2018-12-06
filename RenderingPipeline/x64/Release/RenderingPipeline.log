@@ -1,15 +1,9 @@
-﻿  Moc'ing RenderingPipeline.h...
+﻿  moc_RenderingPipeline.cpp
   Camera.cpp
-  DrawPolygon.cpp
   Light.cpp
-  main.cpp
-  Matrix4x4.cpp
-  PerspectiveProjector.cpp
-  PolygonCliper.cpp
-  Projector.cpp
   RenderingPipeline.cpp
-  Transformer.cpp
-  Vector4.cpp
-  moc_RenderingPipeline.cpp
-  qrc_RenderingPipeline.cpp
-  RenderingPipeline.vcxproj -> C:\Users\Erick\Documents\My Task\PipeLine\x64\Release\RenderingPipeline.exe
+  main.cpp
+  Camera.obj : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+  Generating code
+  Finished generating code
+  RenderingPipeline.vcxproj -> C:\Users\Administrator\Desktop\Final\RenderingPipeline\x64\Release\RenderingPipeline.exe

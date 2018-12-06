@@ -5,6 +5,7 @@
 #include <vector>
 #include "user_data.h"
 #include "PolygonCliper.h"
+#include "DrawLineAlgorithm.h"
 
 /*
 绘制多边形
@@ -14,17 +15,22 @@ class DrawPolygon
 public:
 	DrawPolygon();
 	~DrawPolygon();
-	// 绘制多边形纹理
-	void drawPolygonTexture(QWidget* widget, QPainter* painter, std::vector<Point>& points);
+
+	///////////////////////////新版的接口////////////////////////////////////
+	// 这里的Object的每个点都是投影归一化后的
+	// 绘制函数
+	void drawPolygonTexture(QWidget* widget, QPainter* painter, Object& object);
 	// 绘制边框
-	void drawFrame(QWidget* widget, QPainter* painter, std::vector<Point>& points);
+	void drawFrame(QWidget* widget, QPainter* painter, Object& points);
 	// 绘制填充
-	void drawFill(QWidget* widget, QPainter* painter, std::vector<Point>& points);
+	void drawFill(QWidget* widget, QPainter* painter, Object& points);
+
 	// 设置纹理
 	void setTexture(int** red, int** green, int** blue);
-	
 	// 设置深度缓冲
-	inline void setDepth(double** depth) { m_depthBuffer = depth; }
+	void setDepth(double** depth);
+
+	inline void setMode(int mode) { m_mode = mode; }
 protected:
 	// 外界的窗口
 	QWidget* m_widget{ nullptr };
@@ -32,6 +38,9 @@ protected:
 	QPainter* m_painter{ nullptr };
 	// 裁剪器
 	PolygonCliper* m_PolygonCliper{ nullptr };
+	// 画线算法
+	DrawLineAlgorithm* m_drawLine;
+
 	// 裁剪后的多边形顶点
 	std::vector<Point> m_polygonPoints;
 	// 纹理RGB
@@ -40,5 +49,8 @@ protected:
 	int** m_textureBlue{ nullptr };
 	// 深度缓冲矩阵
 	double** m_depthBuffer{ nullptr };
+
+	// 绘制模式，0是填充，其他是贴图
+	int m_mode{ 0 };
 };
 

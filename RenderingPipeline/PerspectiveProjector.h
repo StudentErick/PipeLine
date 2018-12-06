@@ -16,6 +16,6 @@ public:
 	// 重写设置矩阵的函数
 	void setProjectMat(double n = 10, double f = 1000,
 		double t = 20, double b = -20,
-		double l = 20, double r = -20)override;
+		double l = -20, double r = 20)override;
 };
 

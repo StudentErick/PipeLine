@@ -26,6 +26,7 @@ public:
 	void setIdentity();
 	void setZero();
 
+	inline void setVal(int i, int j, double val) { mat[i][j] = val; }
 	inline double getVal(int i, int j) { return mat[i][j]; }
 protected:
 	double mat[4][4];
