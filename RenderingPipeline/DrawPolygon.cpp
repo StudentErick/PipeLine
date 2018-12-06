@@ -139,7 +139,7 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 			edge.v = low_point.v;
 
 			// 计算RGB、深度、纹理插值
-			double steps = 1.0*(high_point.y - low_point.y);
+			double steps = (high_point.y - low_point.y);
 			edge.delta_r = (high_point.r - low_point.r) / steps;
 			edge.delta_g = (high_point.g - low_point.g) / steps;
 			edge.delta_b = (high_point.b - low_point.b) / steps;
@@ -148,7 +148,7 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 			edge.delta_v = (high_point.v - low_point.v) / steps;
 
 			// 进入边表
-			ET[std::max(0.0,std::min(plane[i].y, plane[i + 1].y) + WINDOW_HEIGHT / 2)].push_back(edge);
+			ET[std::max(0.0, std::min(plane[i].y, plane[i + 1].y) + WINDOW_HEIGHT / 2)].push_back(edge);
 		}
 
 		// 开始扫描，从下往上，记得标准化 WTF！！！！！
@@ -171,7 +171,7 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 			int m = 0;
 			auto itAET = AET.begin();
 			while (m <= n - 2) {
-				Point p1(itAET->x, i - WINDOW_HEIGHT / 2, itAET->depth, itAET->r, itAET->g, itAET->b, itAET->u, itAET->v);  // 注意明暗，y坐标别忘了-400恢复！！！！！！！！
+				Point p1(itAET->x, i - WINDOW_HEIGHT / 2, itAET->depth, itAET->r, itAET->g, itAET->b, itAET->u, itAET->v);
 				++itAET;
 				Point p2(itAET->x, i - WINDOW_HEIGHT / 2, itAET->depth, itAET->r, itAET->g, itAET->b, itAET->u, itAET->v);
 				++itAET;
@@ -180,15 +180,20 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 				// 绘制顶点
 				QColor color;
 				for (const auto& p : pvec) {
-					if (m_mode==0) {
+					if (m_mode == 0) {
 						color.setRed(p.r);
 						color.setGreen(p.g);
 						color.setBlue(p.r);
 					}
 					else {
-						color.setRed(m_textureRed[p.u][p.v]);
-						color.setGreen(m_textureGreen[p.u][p.v]);
-						color.setBlue(m_textureBlue[p.u][p.v]);
+						int u = std::min(PIC_HEIGHT - 1, p.u);
+						int v = std::min(PIC_HEIGHT - 1, p.v);
+						auto r = std::min(255.0, p.I*m_textureRed[u][v]);
+						auto g = std::min(255.0, p.I*m_textureGreen[u][v]);
+						auto b = std::min(255.0, p.I*m_textureBlue[u][v]);
+						color.setRed(r);
+						color.setGreen(g);
+						color.setBlue(b);
 					}
 					QPen pen(color);
 					m_painter->setPen(pen);

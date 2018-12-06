@@ -29,7 +29,7 @@ void Light::setPolygonLight(Object& object) {
 		Vector4 vec2(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
 		auto&& normalVec = vec1.cross(vec2);  // 平面的法向量
 
-		double I = 1;
+		double I = 0.5;
 		double dif = fabs(normalVec.dot(m_lightDir)) / (normalVec.length()*m_lightDir.length());
 		for (auto& p : plane) {
 			p.r *= (I + dif);
@@ -38,6 +38,7 @@ void Light::setPolygonLight(Object& object) {
 			p.r = std::min(255, p.r);
 			p.g = std::min(255, p.g);
 			p.b = std::min(255, p.b);
+			p.I = I + dif;
 		}
 	}
 }

@@ -2,6 +2,9 @@
 
 #include <QPalette>
 #include <QPainter>
+#include <QImage>
+#include <QColor>
+#include <QPixmap>
 
 RenderingPipeline::RenderingPipeline(QWidget *parent)
 	: QWidget(parent)
@@ -23,6 +26,20 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 		m_textureBlue[i] = new int[PIC_WIDTH];
 	}
 
+	// 读入RGB数据
+	QPixmap pixmap;
+	pixmap.load(QString(":/RenderingPipeline/Resources/pic.jpg"));
+	QImage image;
+	image = pixmap.toImage();
+	for (int i = 0; i < PIC_HEIGHT; ++i) {
+		for (int j = 0; j < PIC_WIDTH; ++j) {
+			QColor color = image.pixel(i, j);
+			m_textureRed[i][j] = color.red() / 1.3;
+			m_textureGreen[i][j] = color.green() / 1.3;
+			m_textureBlue[i][j] = color.blue() / 1.3;
+		}
+	}
+
 	// 申请深度缓存空间
 	m_depthBuffer = new double*[WINDOW_HEIGHT];
 	for (int i = 0; i < WINDOW_HEIGHT; ++i) {
@@ -34,55 +51,56 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 	Vector4 localPos(0, 0, 0);
 	m_initCube.centerPos = localPos;   // 立方体的中心
 
-	m_lightDir.X(0);
+	m_lightDir.X(1);
 	m_lightDir.Y(-0.3);
 	m_lightDir.Z(-1);
 	/*************************************************************************************************/
 
 	/****************************这里设置需要绘制的物体****************************/
+	int h = PIC_HEIGHT, w = PIC_WIDTH;
 	// 注意图形必须是封闭的，起点必须首位相接
 	int L = 5;
 	Plane plane1;
-	plane1.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane1.emplace_back(Point(L, L, L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane1.emplace_back(Point(L, -L, L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane1.emplace_back(Point(-L, -L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane1.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane1.emplace_back(Point(-L, L, L, 255, 0, 0, 0, 0));
+	plane1.emplace_back(Point(L, L, L, 0, 255, 0, 0, w - 1));
+	plane1.emplace_back(Point(L, -L, L, 0, 0, 255, h - 1, w - 1));
+	plane1.emplace_back(Point(-L, -L, L, 255, 0, 0, h - 1, 0));
+	plane1.emplace_back(Point(-L, L, L, 255, 0, 0, 0, 0));
 
 	Plane plane2;
-	plane2.emplace_back(Point(L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane2.emplace_back(Point(L, L, -L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane2.emplace_back(Point(L, -L, -L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane2.emplace_back(Point(L, -L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane2.emplace_back(Point(L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane2.emplace_back(Point(L, L, L, 255, 0, 0, 0, 0));
+	plane2.emplace_back(Point(L, L, -L, 0, 255, 0, 0, w - 1));
+	plane2.emplace_back(Point(L, -L, -L, 0, 0, 255, h - 1, w - 1));
+	plane2.emplace_back(Point(L, -L, L, 255, 0, 0, h - 1, 0));
+	plane2.emplace_back(Point(L, L, L, 255, 0, 0, 0, 0));
 
 	Plane plane3;
-	plane3.emplace_back(Point(-L, L, -L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane3.emplace_back(Point(L, L, -L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane3.emplace_back(Point(L, -L, -L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane3.emplace_back(Point(-L, -L, -L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane3.emplace_back(Point(-L, L, -L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane3.emplace_back(Point(-L, L, -L, 0, 255, 0, 0, 0));
+	plane3.emplace_back(Point(L, L, -L, 0, 255, 25, 0, w - 1));
+	plane3.emplace_back(Point(L, -L, -L, 0, 255, 25, h, w - 1));
+	plane3.emplace_back(Point(-L, -L, -L, 0, 0, 0, h - 1, 0));
+	plane3.emplace_back(Point(-L, L, -L, 0, 255, 33, 0, 0));
 
 	Plane plane4;
-	plane4.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane4.emplace_back(Point(-L, -L, L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane4.emplace_back(Point(-L, -L, -L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane4.emplace_back(Point(-L, L, -L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane4.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane4.emplace_back(Point(-L, L, L, 25, 0, 54, 0, 0));
+	plane4.emplace_back(Point(-L, -L, L, 0, 255, 0, 0, w - 1));
+	plane4.emplace_back(Point(-L, -L, -L, 0, 0, 255, h - 1, w - 1));
+	plane4.emplace_back(Point(-L, L, -L, 75, 0, 24, h - 1, 0));
+	plane4.emplace_back(Point(-L, L, L, 25, 137, 0, 0, 0));
 
 	Plane plane5;
-	plane5.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane5.emplace_back(Point(L, L, L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane5.emplace_back(Point(L, L, -L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane5.emplace_back(Point(-L, L, -L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane5.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane5.emplace_back(Point(-L, L, L, 5, 120, 0, 0, 0));
+	plane5.emplace_back(Point(L, L, L, 0, 255, 0, 0, w - 1));
+	plane5.emplace_back(Point(L, L, -L, 0, 220, 2, h - 1, w - 1));
+	plane5.emplace_back(Point(-L, L, -L, 0, 32, 33, h - 1, 0));
+	plane5.emplace_back(Point(-L, L, L, 55, 213, 1, 0, 0));
 
 	Plane plane6;
-	plane6.emplace_back(Point(-L, -L, L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane6.emplace_back(Point(L, -L, L, 0, 255, 0, 0, PIC_HEIGHT));
-	plane6.emplace_back(Point(L, -L, -L, 0, 0, 255, 0, PIC_HEIGHT));
-	plane6.emplace_back(Point(-L, -L, -L, 255, 0, 0, 0, PIC_HEIGHT));
-	plane6.emplace_back(Point(-L, -L, L, 255, 0, 0, 0, PIC_HEIGHT));
+	plane6.emplace_back(Point(-L, -L, L, 2, 222, 15, 0, 0));
+	plane6.emplace_back(Point(L, -L, L, 0, 25, 0, 0, w));
+	plane6.emplace_back(Point(L, -L, -L, 0, 0, 5, h, w));
+	plane6.emplace_back(Point(-L, -L, -L, 225, 0, 0, h, 0));
+	plane6.emplace_back(Point(-L, -L, L, 255, 0, 0, 0, 0));
 
 	// 构造立方体的平面
 	m_initCube.planes.push_back(plane1);
@@ -94,7 +112,7 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 
 	for (auto& plane : m_initCube.planes) {
 		for (auto& p : plane) {
-			p.r = p.g = p.b = 100;
+			p.r = p.g = p.b = 150;
 		}
 	}
 	/********************************************************************************/
@@ -127,7 +145,6 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 
 	m_light = new Light;
 	m_light->setLightDir(m_lightDir);
-	//m_light->setPolygonLight(m_initCube);  // 立刻光照渲染
 }
 
 RenderingPipeline::~RenderingPipeline() {

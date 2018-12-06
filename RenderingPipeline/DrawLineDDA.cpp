@@ -82,7 +82,6 @@ void DrawLineDDA::drawLine(const Point & start,
 			pointsOut.emplace_back(Point(X, Y, Z,
 				(int)R, (int)G, (int)B,
 				(int)U, (int)V));
-			//m_buffer[(int)X + WINDOW_HEIGHT / 2][(int)Y + WINDOW_HEIGHT / 2] = Z;   // 更新缓冲值
 			m_buffer[x][y] = Z;   // 更新缓冲值
 		}
 

@@ -1,2 +1,3 @@
-﻿  RenderingPipeline.cpp
+﻿  DrawLineDDA.cpp
+  DrawPolygon.cpp
   RenderingPipeline.vcxproj -> C:\Users\Erick\Documents\My Task\PipeLine\x64\Debug\RenderingPipeline.exe
