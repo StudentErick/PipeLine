@@ -1,9 +1,5 @@
-﻿  moc_RenderingPipeline.cpp
-  Camera.cpp
-  Light.cpp
-  RenderingPipeline.cpp
-  main.cpp
+﻿  DrawPolygon.cpp
   Camera.obj : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
   Generating code
   Finished generating code
-  RenderingPipeline.vcxproj -> C:\Users\Administrator\Desktop\Final\RenderingPipeline\x64\Release\RenderingPipeline.exe
+  RenderingPipeline.vcxproj -> C:\Users\Erick\Documents\My Task\PipeLine\x64\Release\RenderingPipeline.exe

@@ -41,7 +41,7 @@ protected:
 	Transformer* m_tranformer{ nullptr };
 	Camera* m_camera{ nullptr };
 	DrawPolygon* m_drawPolygon{ nullptr };
-	//Light* m_light{ nullptr }; 
+	Light* m_light{ nullptr }; 
 	PerspectiveProjector* m_perspectiveProjector;
 
 	// Œ∆¿ÌRGB
@@ -67,6 +67,8 @@ protected:
 	bool m_showFrame{ false };
 	bool m_showFill{ true };
 	bool m_showTexture{ false };
+
+	int m_mode{ 0 };
 
 private:
 	Ui::RenderingPipelineClass ui;

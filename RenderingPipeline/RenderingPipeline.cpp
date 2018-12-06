@@ -50,7 +50,7 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 	plane1.emplace_back(Point(-L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
 
 	Plane plane2;
-	plane2.emplace_back(Point(L, L, L, 255, 0, 0,0, PIC_HEIGHT));
+	plane2.emplace_back(Point(L, L, L, 255, 0, 0, 0, PIC_HEIGHT));
 	plane2.emplace_back(Point(L, L, -L, 0, 255, 0, 0, PIC_HEIGHT));
 	plane2.emplace_back(Point(L, -L, -L, 0, 0, 255, 0, PIC_HEIGHT));
 	plane2.emplace_back(Point(L, -L, L, 255, 0, 0, 0, PIC_HEIGHT));
@@ -117,17 +117,17 @@ RenderingPipeline::RenderingPipeline(QWidget *parent)
 
 	m_camera = new Camera;
 	m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
-	m_camera->setLightDir(m_lightDir);
 
 	m_drawPolygon = new DrawPolygon;
 	m_drawPolygon->setTexture(m_textureRed, m_textureGreen, m_textureBlue);
 	m_drawPolygon->setDepth(m_depthBuffer);
 
-
 	m_perspectiveProjector = new PerspectiveProjector;
 	m_perspectiveProjector->setProjectMat();  // 使用默认投影
 
-	repaint();
+	m_light = new Light;
+	m_light->setLightDir(m_lightDir);
+	//m_light->setPolygonLight(m_initCube);  // 立刻光照渲染
 }
 
 RenderingPipeline::~RenderingPipeline() {
@@ -163,25 +163,23 @@ void RenderingPipeline::updateDepthBuffer() {
 void RenderingPipeline::paintEvent(QPaintEvent *event) {
 	QPainter painter(this);
 	updateDepthBuffer();
-	if (m_showFrame) {
-		m_camera->setLightMode(0);
+	if (m_mode == 0) {
 		m_camera->transform(m_initCube, m_finalCube);
 		m_perspectiveProjector->project(m_finalCube, WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_drawPolygon->drawFrame(this, &painter, m_finalCube);
 	}
 
-	if (m_showFill) {
-		auto tmp = m_initCube;
-		m_camera->setLightMode(1);
+	if (m_mode == 1) {
 		m_camera->transform(m_initCube, m_finalCube);
+		m_light->setPolygonLight(m_finalCube);
 		m_perspectiveProjector->project(m_finalCube, WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_drawPolygon->setMode(0);
 		m_drawPolygon->drawFill(this, &painter, m_finalCube);
 	}
 
-	if (m_showTexture) {
-		m_camera->setLightMode(1);
+	if (m_mode == 2) {
 		m_camera->transform(m_initCube, m_finalCube);
+		m_light->setPolygonLight(m_finalCube);
 		m_perspectiveProjector->project(m_finalCube, WINDOW_WIDTH, WINDOW_HEIGHT);
 		m_drawPolygon->setMode(1);
 		m_drawPolygon->drawFill(this, &painter, m_finalCube);
@@ -257,7 +255,42 @@ void RenderingPipeline::keyPressEvent(QKeyEvent * event) {
 
 
 		/******************************以下是移动相机物体的操作******************************/
+	case Qt::Key_Z:  // 相机向上
+		m_camPos.Y(m_camPos.Y() + 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;
+	case Qt::Key_X:  // 相机向下
+		m_camPos.Y(m_camPos.Y() - 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;
+	case Qt::Key_C:  // 相机向左
+		m_camPos.X(m_camPos.X() - 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;
+	case Qt::Key_V:  // 相机向右
+		m_camPos.X(m_camPos.X() + 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;
+	case Qt::Key_B:  // 相机向前
+		m_camPos.Z(m_camPos.Z() + 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;
+	case Qt::Key_N:
+		m_camPos.Z(m_camPos.Z() - 1);
+		m_camera->setCamera(m_camPos, m_camTarget, m_UpVec);
+		repaint();
+		break;       // 相机向后
 
+	/***************切换模式**************/
+	case Qt::Key_Space:
+		m_mode = (m_mode + 1) % 3;
+		repaint();
+		break;
 	default:
 		break;
 	}

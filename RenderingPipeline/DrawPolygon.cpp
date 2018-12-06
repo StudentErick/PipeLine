@@ -30,19 +30,6 @@ void DrawPolygon::setTexture(int** red, int** green, int** blue)
 	m_textureRed = red;
 	m_textureGreen = green;
 	m_textureBlue = blue;
-	//QPixmap texturePic;
-	//texturePic.load(QString(":/Resources/pic.jpg"));
-	//QImage image = texturePic.toImage();
-	//int x = image.width();
-	//int y = image.height();
-	//for (int i = 0; i < PIC_HEIGHT; ++i) {
-	//	for (int j = 0; j < PIC_WIDTH; ++j) {
-	//		QColor color = image.pixel(i, j);
-	//		m_textureRed[i][j] = color.red();
-	//		m_textureGreen[i][j] = color.green();
-	//		m_textureBlue[i][j] = color.blue();
-	//	}
-	//}
 }
 
 void DrawPolygon::setDepth(double ** depth)
@@ -74,7 +61,7 @@ void DrawPolygon::drawFrame(QWidget * widget, QPainter * painter, Object & objec
 			m_drawLine->drawLine(plane[i], plane[i + 1], points);
 			for (const auto& p : points) {
 				QPen pen;
-				pen.setColor(QColor(p.r, p.g, p.b, 255));
+				pen.setColor(QColor(p.r, p.g, p.b));
 				m_painter->setPen(pen);
 				// 绘制点的坐标，注意坐标转换
 				m_painter->drawPoint(QPoint(p.x + WINDOW_WIDTH / 2, (WINDOW_HEIGHT) / 2 - p.y));
@@ -161,7 +148,7 @@ void DrawPolygon::drawFill(QWidget * widget, QPainter * painter, Object & object
 			edge.delta_v = (high_point.v - low_point.v) / steps;
 
 			// 进入边表
-			ET[std::min(plane[i].y, plane[i + 1].y) + WINDOW_HEIGHT / 2].push_back(edge);
+			ET[std::max(0.0,std::min(plane[i].y, plane[i + 1].y) + WINDOW_HEIGHT / 2)].push_back(edge);
 		}
 
 		// 开始扫描，从下往上，记得标准化 WTF！！！！！

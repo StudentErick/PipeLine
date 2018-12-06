@@ -4,15 +4,11 @@
 
 Camera::Camera()
 {
-	m_light = new Light;
 }
 
 
 Camera::~Camera()
 {
-	if (m_light != nullptr) {
-		delete m_light;
-	}
 }
 
 void Camera::setCamera(const Vector4 & pos, const Vector4 & target, const Vector4 & up)
@@ -26,8 +22,6 @@ void Camera::setCamera(const Vector4 & pos, const Vector4 & target, const Vector
 	m_cameraRight.normalize();
 	m_cameraUp = cameraDir.cross(m_cameraRight);
 	m_cameraUp.normalize();
-
-	m_light->setCameraDir(cameraDir);
 
 	Matrix4x4 left, right;
 
@@ -62,20 +56,11 @@ void Camera::transform(Object & objectIn, Object & objectOut)
 		Plane planeOut;
 		for (auto& point : plane) {
 			Vector4 vec(point.x + x, point.y + y, point.z + z);  // 局部坐标需要累加上全局的，构成当前的全局坐标
-		//	Vector4 vec(point.x, point.y, point.z);
 			auto&& resVec = m_lookAt * vec;
 			planeOut.emplace_back(Point(resVec.X(), resVec.Y(), resVec.Z(),
 				point.r, point.g, point.b,
 				point.u, point.v));
 		}
-		if (m_mode != 0)
-			m_light->setPolygonLight(planeOut);    // 在这里设置光照
 		objectOut.planes.push_back(planeOut);  // 这里以后要考虑改成移动构造
 	}
-}
-
-void Camera::setLightDir(const Vector4 & lightDir)
-{
-	m_lightDir = lightDir; 
-	m_light->setLightDir(m_lightDir);
 }

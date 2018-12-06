@@ -160,9 +160,6 @@
   <ItemGroup>
     <ResourceCompile Include="RenderingPipeline.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="bitmap1.bmp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

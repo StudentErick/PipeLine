@@ -129,7 +129,4 @@
   <ItemGroup>
     <ResourceCompile Include="RenderingPipeline.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="bitmap1.bmp" />
-  </ItemGroup>
 </Project>
